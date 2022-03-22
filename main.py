@@ -34,3 +34,77 @@ vel = 4
 
 p_height = 48
 p_width = 15
+
+
+# Creating the player
+
+class Paddle(pygame.sprite.Sprite):
+    def __init__(self, color, width, height):
+        super().__init__()
+        self.color = color
+        self.image = pygame.Surface([width, height])
+        pygame.draw.rect(self.image, color, [0, 0, width, height])
+        self.rect = self.image.get_rect()
+
+    def moveRight(self, pixels):
+        self.rect.x += pixels
+        if self.rect.x > s_width - wall_width - p_width - 33:
+            self.rect.x = s_width - wall_width - p_width - 33
+
+    def moveLeft(self, pixels):
+        self.rect.x -= pixels
+        if self.rect.x < wall_width:
+            self.rect.x = wall_width
+
+    def draw(self):
+        pygame.draw.rect(screen, self.color, self.rect)
+
+
+# Creating the ball
+class Ball(pygame.sprite.Sprite):
+    def __init__(self, color, width, height):
+        super().__init__()
+        self.image = pygame.Surface([width, height])
+        pygame.draw.rect(self.image, color, [0, 0, width, height])
+        self.rect = self.image.get_rect()
+        self.vel = [vel, vel]
+
+    def update(self):
+        self.rect.x += self.vel[0]
+        self.rect.y += self.vel[1]
+
+    def bounce(self):
+        self.vel[0] = self.vel[0]
+        self.vel[1] = -self.vel[1]
+
+    def draw(self):
+        pygame.draw.circle(screen, colors["White"], (375, 300), 10)
+
+
+class Brick(pygame.sprite.Sprite):
+    def __init__(self, color, width, height):
+        super().__init__()
+        self.image = pygame.Surface([width, height])
+        pygame.draw.rect(self.image, color, [0, 0, width, height])
+        self.rect = self.image.get_rect()
+
+
+# Creating object of player and ball
+
+player = Paddle(colors["Blue"], p_height, p_width)
+player.rect.x = s_width // 2
+player.rect.y = 750
+balls = 1
+velocity = 4
+
+ball = Ball(colors["White"], 10, 10)
+ball.rect.x = s_width // 2 - 5
+ball.rect.y = s_height // 2 - 5
+
+all_bricks = pygame.sprite.Group()
+
+brick_width = 55
+brick_height = 16
+x_gap = 7
+y_gap = 5
+wall_width = 16
