@@ -108,3 +108,31 @@ brick_height = 16
 x_gap = 7
 y_gap = 5
 wall_width = 16
+
+
+
+def main_game(points, balls):
+
+    step = 0
+
+    run = True
+
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.locals.QUIT:
+                run = False
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            player.moveLeft(8)
+        if keys[pygame.K_RIGHT]:
+            player.moveRight(8)
+
+        screen.fill(colors["Black"])
+
+        pygame.display.update()
+
+        clock.tick(fps)
+
+
+main_game(points, balls)
