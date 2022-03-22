@@ -130,6 +130,113 @@ def main_game(points, balls):
 
         screen.fill(colors["Black"])
 
+        
+        # Screen scenario
+
+        pygame.draw.line(
+            screen,
+            colors["Blue"],
+            [(wall_width / 2) - 1, s_height - 65 + p_height / 2 - 54 / 2],
+            [(wall_width / 2) - 1, s_height - 65 + p_height / 2 - 54 / 2 + 54],
+            wall_width,
+        )
+        pygame.draw.line(
+            screen,
+            colors["Blue"],
+            [
+                (s_width - wall_width / 2) - 1,
+                s_height - 65 + p_height / 2 - 54 / 2,
+            ],
+            [
+                (s_width - wall_width / 2) - 1,
+                s_height - 65 + p_height / 2 - 54 / 2 + 54,
+            ],
+            wall_width,
+        )
+
+        pygame.draw.line(
+            screen,
+            colors["Red"],
+            [(wall_width / 2) - 1, 212.5],
+            [(wall_width / 2) - 1, 212.5 + (2 * brick_height + 2 * y_gap)],
+            wall_width,
+        )
+        pygame.draw.line(
+            screen,
+            colors["Red"],
+            [(s_width - wall_width / 2) - 1, 212.5],
+            [(s_width - wall_width / 2) - 1, 212.5 + (
+                2 * brick_height + 2 * y_gap)],
+            wall_width,
+        )
+
+        pygame.draw.line(
+            screen,
+            colors["Orange"],
+            [(wall_width / 2) - 1, 212.5 + (2 * brick_height + 2 * y_gap)],
+            [(wall_width / 2) - 1, 212.5 + (4 * brick_height + 4 * y_gap)],
+            wall_width,
+        )
+        pygame.draw.line(
+            screen,
+            colors["Orange"],
+            [(s_width - wall_width / 2) - 1, 212.5 + (
+                2 * brick_height + 2 * y_gap)],
+            [(s_width - wall_width / 2) - 1, 212.5 + (
+                4 * brick_height + 4 * y_gap)],
+            wall_width,
+        )
+
+        pygame.draw.line(screen, colors["Grey"], [0, 19], [s_width, 19], 40)
+        pygame.draw.line(
+            screen,
+            colors["Grey"],
+            [(wall_width / 2) - 1, 0],
+            [(wall_width / 2) - 1, s_height],
+            wall_width,
+        )
+        pygame.draw.line(
+            screen,
+            colors["Grey"],
+            [(s_width - wall_width / 2) - 1, 0],
+            [(s_width - wall_width / 2) - 1, s_height],
+            wall_width,
+        )
+
+        pygame.draw.line(
+            screen,
+            colors["Green"],
+            [(wall_width / 2) - 1, 212.5 + (4 * brick_height + 4 * y_gap)],
+            [(wall_width / 2) - 1, 212.5 + (6 * brick_height + 6 * y_gap)],
+            wall_width,
+        )
+        pygame.draw.line(
+            screen,
+            colors["Green"],
+            [(s_width - wall_width / 2) - 1, 210 + (
+                4 * brick_height + 4 * y_gap)],
+            [(s_width - wall_width / 2) - 1, 210 + (
+                6 * brick_height + 6 * y_gap)],
+            wall_width,
+        )
+
+        pygame.draw.line(
+            screen,
+            colors["Yellow"],
+            [(wall_width / 2) - 1, 212.5 + (6 * brick_height + 6 * y_gap)],
+            [(wall_width / 2) - 1, 212.5 + (8 * brick_height + 8 * y_gap)],
+            wall_width,
+        )
+        pygame.draw.line(
+            screen,
+            colors["Yellow"],
+            [(s_width - wall_width / 2) - 1, 212.5 + (
+                6 * brick_height + 6 * y_gap)],
+            [(s_width - wall_width / 2) - 1, 212.5 + (
+                8 * brick_height + 8 * y_gap)],
+            wall_width,
+        )
+
         pygame.display.update()
 
         clock.tick(fps)
