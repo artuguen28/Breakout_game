@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 
 # Initialize pygame for game machanics
 pygame.init()
@@ -36,6 +37,11 @@ p_height = 48
 p_width = 15
 
 all_sprites_list = pygame.sprite.Group()
+
+# Collision sounds
+brick_sound = pygame.mixer.Sound("Sounds/sound_brick.wav")
+paddle_sound = pygame.mixer.Sound("Sounds/sound_paddle.wav")
+wall_sound = pygame.mixer.Sound("Sounds/sound_wall.wav")
 
 
 # Creating the player
@@ -216,8 +222,80 @@ def main_game(points, balls):
 
         all_sprites_list.update()
 
-        screen.fill(colors["Black"])
 
+        # Colision and velocity
+
+        if ball.rect.y > s_height:
+            ball.rect.x = s_width // 2 - 5
+            ball.rect.y = s_height // 2 - 5
+            ball.vel[1] = ball.vel[1]
+            balls += 1
+
+            if balls == 4:
+                font = pygame.font.Font("freesansbold.ttf", 75)
+                text = font.render("GAME OVER", 1, "White")
+                text_rect = text.get_rect(center=(s_width / 2, 430))
+                screen.blit(text, text_rect)
+                pygame.display.update()
+                pygame.time.wait(2000)
+                run = False
+
+        if pygame.sprite.collide_mask(ball, player):
+            ball.rect.x += ball.vel[0]
+            ball.rect.y -= ball.vel[1]
+            ball.bounce()
+            paddle_sound.play()
+
+        if ball.rect.y < 40:
+            ball.vel[1] = -ball.vel[1]
+            wall_sound.play()
+
+        if ball.rect.x >= s_width - wall_width - 10:
+            ball.vel[0] = -ball.vel[0]
+            wall_sound.play()
+
+        if ball.rect.x <= wall_width:
+            ball.vel[0] = -ball.vel[0]
+            wall_sound.play()
+
+        brick_collision_list = pygame.sprite.spritecollide(
+            ball, all_bricks, False)
+
+        for brick in brick_collision_list:
+            ball.bounce()
+            brick_sound.play()
+
+            if len(brick_collision_list) > 0:
+                step += 1
+                for i in range(0, 448, 28):
+                    if step == i:
+                        ball.vel[0] += 1
+                        ball.vel[1] += 1
+
+            if 380.5 > brick.rect.y > 338.5:
+                points += 1
+                brick.kill()
+            elif 338.5 > brick.rect.y > 294:
+                points += 3
+                brick.kill()
+            elif 294 > brick.rect.y > 254.5:
+                points += 5
+                brick.kill()
+            else:
+                points += 7
+                brick.kill()
+
+            if len(all_bricks) == 0:
+                font = pygame.font.Font("freesansbold.ttf", 70)
+                text = font.render("SCREEN CLEARED", 1, colors["White"])
+                text_rect = text.get_rect(center=(s_width / 2, s_height / 2))
+                all_sprites_list.add(ball)
+                screen.blit(text, text_rect)
+                pygame.display.update()
+                pygame.time.wait(2000)
+                run = False
+
+        screen.fill(colors["Black"])
 
         # Screen scenario
 
@@ -325,11 +403,20 @@ def main_game(points, balls):
             wall_width,
         )
 
+        font = pygame.font.Font("freesansbold.ttf", 70)
+        text = font.render(str(f"{points:03}"), 1, "White")
+        screen.blit(text, (80, 120))
+        text = font.render(str(balls), 1, "White")
+        screen.blit(text, (520, 41))
+        text = font.render("000", 1, "White")
+        screen.blit(text, (580, 120))
+        text = font.render("1", 1, "White")
+        screen.blit(text, (20, 40))
+
         all_sprites_list.draw(screen)
 
         pygame.display.update()
 
         clock.tick(fps)
-
 
 main_game(points, balls)
